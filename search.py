@@ -5,6 +5,7 @@ import warnings
 from bilibili_api import search, sync
 import requests
 from bs4 import BeautifulSoup
+from youtubesearchpython import PlaylistsSearch
 warnings.filterwarnings("ignore")
 def searchOTT(text):
 
@@ -113,7 +114,31 @@ def searchOTT(text):
 
 	    #print(listTitle[i])
 	    #print("https://ani.gamer.com.tw/"+listUrl[i])
+	#Youtube搜尋(羚邦&木棉花)
+	searchYT = PlaylistsSearch(SearchKeyword)
+	res=searchYT.result()
+	try:
+		for i in range(0,len(res['result'])):
+			df = pd.DataFrame()
+			if res['result'][i]['channel']['id'] == "UCgdwtyqBunlRb-i-7PnCssQ":
+				print("MuseYT")
+				print(res['result'][i]['title'])
+				print(res['result'][i]['link'])
+				url=res['result'][i]['link']
+				df = df.append({"Platform":"MuseYT","URL":url}, ignore_index=True)
+				print(df)
+				dfAll=dfAll.append({"Title":res['result'][i]['title'],"Watch":df}, ignore_index=True)
 
+			if res['result'][i]['channel']['id'] == "UC0wNSTMWIL3qaorLx0jie6A":
+				print("AniOneYT")
+				print(res['result'][i]['title'])
+				print(res['result'][i]['link'])
+				url=res['result'][i]['link']
+				df = df.append({"Platform":"AniOneYT","URL":url}, ignore_index=True)
+				print(df)
+				dfAll=dfAll.append({"Title":res['result'][i]['title'],"Watch":df}, ignore_index=True)
+	except:                   # 如果 try 的內容發生錯誤，就執行 except 裡的內容
+		pass	
 
 
 
