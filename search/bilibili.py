@@ -39,3 +39,5 @@ for i in range(0,len(listTitle)):
 	dfAll=dfAll.append({"Title":listTitle[i],"Watch":df}, ignore_index=True)
     
 print(dfAll)
+print("/////////////////")
+print(dfAll.to_json())
