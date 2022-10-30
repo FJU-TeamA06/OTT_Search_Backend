@@ -8,10 +8,10 @@
     python3 main.py 間諜家家酒
 DataFrame格式如下:
 -
-Title排列:
-![](image/Title.png)
-Watch的排列跟Title對應
-裡面有Platform和Url
-![](image/Watch_1.png)
-一個Title有多個Platform的情況:
+Title排列:  
+![](image/Title.png)  
+Watch的排列跟Title對應  
+裡面有Platform和Url  
+![](image/Watch_1.png)  
+一個Title有多個Platform的情況:  
 ![](image/Watch_2.png)
