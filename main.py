@@ -1,2 +1,3 @@
 import search
-print(search.searchOTT("搖曳露營"))
+import sys
+print(search.searchOTT(sys.argv[1]))
