@@ -32,6 +32,7 @@ def searchOTT(text):
 		try:
 			listPatform=[]
 			listUrl=[]
+			listTags=[]
 			for j in range(len(results['items'][i]['offers'])):
 				url=results['items'][i]['offers'][j]['urls']['standard_web']
 				patform=results['items'][i]['offers'][j]['package_short_name']
@@ -42,7 +43,8 @@ def searchOTT(text):
 			df = pd.DataFrame({"Platform":listPatform,"URL":listUrl})
 			df.drop_duplicates(subset='Platform',inplace=True)
 			#print(df)
-			dfAll=dfAll.append({"Title":title,"Watch":df}, ignore_index=True)
+			listTags.append(SearchKeyword)
+			dfAll=dfAll.append({"Title":title,"Tags":listTags,"Watch":df}, ignore_index=True)
 		except:                   # 如果 try 的內容發生錯誤，就執行 except 裡的內容
 			pass
 		#print("***********")
@@ -78,9 +80,11 @@ def searchOTT(text):
 			#print(listUrl[i])
 			df = pd.DataFrame()
 			url=listUrl[i]
+			listTags=[]
+			listTags.append(SearchKeyword)
 			df = df.append({"Platform":"BiliBili","URL":url}, ignore_index=True)
 			#print(df)
-			dfAll=dfAll.append({"Title":listTitle[i],"Watch":df}, ignore_index=True)
+			dfAll=dfAll.append({"Title":listTitle[i],"Tags":listTags,"Watch":df}, ignore_index=True)
 	except:                   # 如果 try 的內容發生錯誤，就執行 except 裡的內容
 		pass
 
@@ -106,11 +110,13 @@ def searchOTT(text):
 	    listUrl.append(url.get("href"))
 	    #print(url.get("href"))
 	for i in range(0,len(listTitle)):
-	    df = pd.DataFrame()
-	    url="https://ani.gamer.com.tw/"+listUrl[i]
-	    df = df.append({"Platform":"anime_gamer","URL":url}, ignore_index=True)
-	    #print(df)
-	    dfAll=dfAll.append({"Title":listTitle[i],"Watch":df}, ignore_index=True)
+		df = pd.DataFrame()
+		url="https://ani.gamer.com.tw/"+listUrl[i]
+		df = df.append({"Platform":"anime_gamer","URL":url}, ignore_index=True)
+		#print(df)
+		listTags=[]
+		listTags.append(SearchKeyword)
+		dfAll=dfAll.append({"Title":listTitle[i],"Tags":listTags,"Watch":df}, ignore_index=True)
 
 	    #print(listTitle[i])
 	    #print("https://ani.gamer.com.tw/"+listUrl[i])
@@ -125,18 +131,22 @@ def searchOTT(text):
 				#print(res['result'][i]['title'])
 				#print(res['result'][i]['link'])
 				url=res['result'][i]['link']
+				listTags=[]
+				listTags.append(SearchKeyword)
 				df = df.append({"Platform":"MuseYT","URL":url}, ignore_index=True)
 				#print(df)
-				dfAll=dfAll.append({"Title":res['result'][i]['title'],"Watch":df}, ignore_index=True)
+				dfAll=dfAll.append({"Title":res['result'][i]['title'],"Tags":listTags,"Watch":df}, ignore_index=True)
 
 			if res['result'][i]['channel']['id'] == "UC0wNSTMWIL3qaorLx0jie6A":
 				#print("AniOneYT")
 				#print(res['result'][i]['title'])
 				#print(res['result'][i]['link'])
 				url=res['result'][i]['link']
+				listTags=[]
+				listTags.append(SearchKeyword)
 				df = df.append({"Platform":"AniOneYT","URL":url}, ignore_index=True)
 				#print(df)
-				dfAll=dfAll.append({"Title":res['result'][i]['title'],"Watch":df}, ignore_index=True)
+				dfAll=dfAll.append({"Title":res['result'][i]['title'],"Tags":listTags,"Watch":df}, ignore_index=True)
 	except:                   # 如果 try 的內容發生錯誤，就執行 except 裡的內容
 		pass	
 
