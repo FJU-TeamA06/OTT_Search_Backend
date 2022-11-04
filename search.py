@@ -18,10 +18,7 @@ def searchOTT(text):
 	results = just_watch.search_for_item(query=SearchKeyword)
 	str1 = json.dumps(results)
 	str2 = json.dumps(results['items'])
-	if results['total_results']>=30:
-		max=30
-	else:
-		max=results['total_results']
+	max=2
 	for i in range(0,max):
 
 		title=results['items'][i]['title']
