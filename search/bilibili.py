@@ -5,9 +5,9 @@ import pandas as pd
 import warnings
 warnings.filterwarnings("ignore")
 dfAll = pd.DataFrame()
-
+Keyword="公主連結"
 async def test_f_search_by_order():
-    return await search.search_by_type("公主連結", search_type=search.SearchObjectType.BANGUMI)
+    return await search.search_by_type(Keyword, search_type=search.SearchObjectType.BANGUMI)
 listTitle=[]
 listUrl=[]
 
@@ -22,22 +22,24 @@ try:
 		max=len(res['result'])
 
 	for i in range(0,max):
+		TagsList=[]
 		title=res['result'][i]['title']
+
 		title = title.replace('<em class="keyword">',"")
 		title = title.replace('</em>',"")
-		listTitle.append(title)
-		listUrl.append(res['result'][i]['url'])
-		#print(title)
-		#print(res['result'][i]['url'])
-		#print("-----")
-	for i in range(0,len(listTitle)):
-		#print(listTitle[i])
-		#print(listUrl[i])
-		df = pd.DataFrame()
-		url=listUrl[i]
-		df = df.append({"Platform":"BiliBili","URL":url}, ignore_index=True)
-		print(df)
-		dfAll=dfAll.append({"Title":listTitle[i],"Watch":df}, ignore_index=True)
+		print(title)
+		TagsList.append(Keyword)
+		TagsList.append(title)
+		jsonArr = json.dumps(TagsList, ensure_ascii=False)
+		print(jsonArr)
+		url=res['result'][i]['url']
+		dfAll=dfAll.append({"Platform":"BiliBili","Title":title,"Tags":jsonArr,"URL":url}, ignore_index=True)
+		dfAll.drop_duplicates(subset='URL',inplace=True)
+		print(title)
+		print(url)
+		print("-----")
+
+
 except:                   # 如果 try 的內容發生錯誤，就執行 except 裡的內容
 	pass
 print(dfAll)
