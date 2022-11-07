@@ -15,8 +15,8 @@ res = sync(test_f_search_by_order())
 try:
 	str1 = json.dumps(res['result'])
 	#print(str1)
-	if len(res['result'])>=30:
-		max=30
+	if len(res['result'])>=5:
+		max=5
 	else:
 		max=len(res['result'])
 

@@ -18,30 +18,29 @@ def searchOTT(text):
 	results = just_watch.search_for_item(query=SearchKeyword)
 	str1 = json.dumps(results)
 	str2 = json.dumps(results['items'])
-	max=2
+	if results['total_results']>=3:
+		max=3
+	else:
+		max=results['total_results']
 	for i in range(0,max):
 
+		TagsList=[]
 		title=results['items'][i]['title']
-		#print(title)
+		print(title)
 		#df = pd.DataFrame(results['items'][i]['offers'])
 		#print(df.columns)
 		#print("=====================")
+		TagsList.append(SearchKeyword)
+		TagsList.append(title)
+		jsonArr = json.dumps(TagsList, ensure_ascii=False)
 		try:
-			listPatform=[]
-			listUrl=[]
-			listTags=[]
 			for j in range(len(results['items'][i]['offers'])):
 				url=results['items'][i]['offers'][j]['urls']['standard_web']
 				patform=results['items'][i]['offers'][j]['package_short_name']
-				#print(patform)
-				#print(url)
-				listPatform.append(patform)
-				listUrl.append(url)
-			df = pd.DataFrame({"Platform":listPatform,"URL":listUrl})
-			df.drop_duplicates(subset='Platform',inplace=True)
-			#print(df)
-			listTags.append(SearchKeyword)
-			dfAll=dfAll.append({"Title":title,"Tags":listTags,"Watch":df}, ignore_index=True)
+				print(patform)
+				print(url)
+				dfAll=dfAll.append({"Platform":patform,"Title":title,"Tags":jsonArr,"URL":url}, ignore_index=True)
+				dfAll.drop_duplicates(subset='Platform',inplace=True)
 		except:                   # 如果 try 的內容發生錯誤，就執行 except 裡的內容
 			pass
 		#print("***********")
@@ -58,30 +57,28 @@ def searchOTT(text):
 	try:
 		str1 = json.dumps(res['result'])
 		#print(str1)
-		if len(res['result'])>=30:
-			max=30
+		if len(res['result'])>=5:
+			max=5
 		else:
 			max=len(res['result'])
 
 		for i in range(0,max):
+			TagsList=[]
 			title=res['result'][i]['title']
+
 			title = title.replace('<em class="keyword">',"")
 			title = title.replace('</em>',"")
-			listTitle.append(title)
-			listUrl.append(res['result'][i]['url'])
-			#print(title)
-			#print(res['result'][i]['url'])
-			#print("-----")
-		for i in range(0,len(listTitle)):
-			#print(listTitle[i])
-			#print(listUrl[i])
-			df = pd.DataFrame()
-			url=listUrl[i]
-			listTags=[]
-			listTags.append(SearchKeyword)
-			df = df.append({"Platform":"BiliBili","URL":url}, ignore_index=True)
-			#print(df)
-			dfAll=dfAll.append({"Title":listTitle[i],"Tags":listTags,"Watch":df}, ignore_index=True)
+			print(title)
+			TagsList.append(SearchKeyword)
+			TagsList.append(title)
+			jsonArr = json.dumps(TagsList, ensure_ascii=False)
+			print(jsonArr)
+			url=res['result'][i]['url']
+			dfAll=dfAll.append({"Platform":"BiliBili","Title":title,"Tags":jsonArr,"URL":url}, ignore_index=True)
+			dfAll.drop_duplicates(subset='URL',inplace=True)
+			print(title)
+			print(url)
+			print("-----")
 	except:                   # 如果 try 的內容發生錯誤，就執行 except 裡的內容
 		pass
 
@@ -107,13 +104,14 @@ def searchOTT(text):
 	    listUrl.append(url.get("href"))
 	    #print(url.get("href"))
 	for i in range(0,len(listTitle)):
-		df = pd.DataFrame()
+		TagsList=[]
+		title=listTitle[i]
+		TagsList.append(SearchKeyword)
+		TagsList.append(title)
+		jsonArr = json.dumps(TagsList, ensure_ascii=False)
 		url="https://ani.gamer.com.tw/"+listUrl[i]
-		df = df.append({"Platform":"anime_gamer","URL":url}, ignore_index=True)
-		#print(df)
-		listTags=[]
-		listTags.append(SearchKeyword)
-		dfAll=dfAll.append({"Title":listTitle[i],"Tags":listTags,"Watch":df}, ignore_index=True)
+		dfAll=dfAll.append({"Platform":"anime_gamer","Title":title,"Tags":jsonArr,"URL":url}, ignore_index=True)
+		dfAll.drop_duplicates(subset='URL',inplace=True)
 
 	    #print(listTitle[i])
 	    #print("https://ani.gamer.com.tw/"+listUrl[i])
@@ -124,26 +122,32 @@ def searchOTT(text):
 		for i in range(0,len(res['result'])):
 			df = pd.DataFrame()
 			if res['result'][i]['channel']['id'] == "UCgdwtyqBunlRb-i-7PnCssQ":
-				#print("MuseYT")
-				#print(res['result'][i]['title'])
-				#print(res['result'][i]['link'])
+				TagsList=[]
+				print("MuseYT")
+				print(res['result'][i]['title'])
+				print(res['result'][i]['link'])
+				title=res['result'][i]['title']
 				url=res['result'][i]['link']
-				listTags=[]
-				listTags.append(SearchKeyword)
-				df = df.append({"Platform":"MuseYT","URL":url}, ignore_index=True)
-				#print(df)
-				dfAll=dfAll.append({"Title":res['result'][i]['title'],"Tags":listTags,"Watch":df}, ignore_index=True)
+				TagsList.append(Keyword)
+				TagsList.append(title)
+				jsonArr = json.dumps(TagsList, ensure_ascii=False)
+
+
+				dfAll=dfAll.append({"Platform":"MuseYT","Title":title,"Tags":jsonArr,"URL":url}, ignore_index=True)
+				dfAll.drop_duplicates(subset='URL',inplace=True)
 
 			if res['result'][i]['channel']['id'] == "UC0wNSTMWIL3qaorLx0jie6A":
-				#print("AniOneYT")
-				#print(res['result'][i]['title'])
-				#print(res['result'][i]['link'])
+				TagsList=[]
+				print("AniOneYT")
+				print(res['result'][i]['title'])
+				print(res['result'][i]['link'])
+				title=res['result'][i]['title']
 				url=res['result'][i]['link']
-				listTags=[]
-				listTags.append(SearchKeyword)
-				df = df.append({"Platform":"AniOneYT","URL":url}, ignore_index=True)
-				#print(df)
-				dfAll=dfAll.append({"Title":res['result'][i]['title'],"Tags":listTags,"Watch":df}, ignore_index=True)
+				TagsList.append(Keyword)
+				TagsList.append(title)
+				jsonArr = json.dumps(TagsList, ensure_ascii=False)
+				dfAll=dfAll.append({"Platform":"AniOneYT","Title":title,"Tags":jsonArr,"URL":url}, ignore_index=True)
+				dfAll.drop_duplicates(subset='URL',inplace=True)
 	except:                   # 如果 try 的內容發生錯誤，就執行 except 裡的內容
 		pass	
 
