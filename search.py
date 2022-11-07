@@ -128,7 +128,7 @@ def searchOTT(text):
 				print(res['result'][i]['link'])
 				title=res['result'][i]['title']
 				url=res['result'][i]['link']
-				TagsList.append(Keyword)
+				TagsList.append(SearchKeyword)
 				TagsList.append(title)
 				jsonArr = json.dumps(TagsList, ensure_ascii=False)
 
@@ -143,7 +143,7 @@ def searchOTT(text):
 				print(res['result'][i]['link'])
 				title=res['result'][i]['title']
 				url=res['result'][i]['link']
-				TagsList.append(Keyword)
+				TagsList.append(SearchKeyword)
 				TagsList.append(title)
 				jsonArr = json.dumps(TagsList, ensure_ascii=False)
 				dfAll=dfAll.append({"Platform":"AniOneYT","Title":title,"Tags":jsonArr,"URL":url}, ignore_index=True)
