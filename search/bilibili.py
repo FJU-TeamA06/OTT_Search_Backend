@@ -8,8 +8,7 @@ dfAll = pd.DataFrame()
 Keyword="公主連結"
 async def test_f_search_by_order():
     return await search.search_by_type(Keyword, search_type=search.SearchObjectType.BANGUMI)
-listTitle=[]
-listUrl=[]
+
 
 res = sync(test_f_search_by_order())
 #print(res['result'])
