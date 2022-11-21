@@ -25,7 +25,7 @@ for  i in trange(386):
 	#urls=result.find_all("a", class_="theme-list-main")
 	for A in titles:
 		title=A['title']
-		url="https://gimytv.tv"+A['href']
+		url="https://gimy.app"+A['href']
 		print(title)
 		print(url)
 		dfAll=dfAll.append({"Platform":"gimytv","Title":title,"URL":url}, ignore_index=True)
