@@ -38,7 +38,7 @@ for  i in range(50):
         dfAll=dfAll.append({"Platform":"anime_gamer","Title":title,"URL":url}, ignore_index=True)
         dfAll.drop_duplicates(subset='URL',inplace=True)
 print(dfAll.to_json())
-dfAll.to_csv("./Test.csv", encoding = 'utf-8',index = True)
+dfAll.to_csv("./AnimeGamer.csv", encoding = 'utf-8',index = True)
 '''#print(soup.prettify())  #輸出排版後的HTML內容
 result = soup.find("div", class_="theme-list-block")
 titles=result.find_all("p",class_="theme-name")
