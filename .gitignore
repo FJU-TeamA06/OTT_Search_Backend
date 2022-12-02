@@ -2,3 +2,5 @@
 *.pyc
 *.pyc
 __pycache__/search.cpython-310.pyc
+*.pyc
+*.pyc

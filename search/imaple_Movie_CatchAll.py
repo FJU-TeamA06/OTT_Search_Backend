@@ -17,17 +17,17 @@ for  i in trange(1621):
 	response = requests.get(
 		"https://imaple.co/type/1-"+str(i)+".html", headers=headers)
 	soup = BeautifulSoup(response.text, "html.parser")
-	print(soup.prettify())
+	#print(soup.prettify())
 	
 	result = soup.find("ul", class_="myui-vodlist clearfix")
-	print(result)
+	#print(result)
 	
 	titles=result.find_all("a",class_="myui-vodlist__thumb lazyload")
 	#print(titles)
 	#urls=result.find_all("a", class_="theme-list-main")
 	for A in titles:
 		title=A['title']
-		url="https://imaple.co/"+A['href']
+		url="https://imaple.co"+A['href']
 		print(title)
 		print(url)
 		dfAll=dfAll.append({"Platform":"imaple","Title":title,"URL":url}, ignore_index=True)
