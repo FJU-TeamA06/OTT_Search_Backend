@@ -4,6 +4,7 @@ import search
 import warnings
 import csv
 import json
+import datetime
 import time
 from opencc import OpenCC
 
@@ -20,9 +21,17 @@ def searchDB(text):
     keyword=text
 
 
-    #底下被註解是用來做爬蟲和動態新增的程式碼，對效能影響巨大(大約增加9秒鐘)
-    '''
+    #底下被爬蟲，約1秒鐘
+    ct = datetime.datetime.now()
+    print("爬蟲開始")
+    print("current time:-", ct)
     WebSearchDF=search.searchOTT(keyword);
+    ct = datetime.datetime.now()
+    print("爬蟲結束")
+    print("current time:-", ct)
+    print("----------")
+    print("檢查和新增資料到DB開始")
+    #動態新增資料的程式碼，對效能影響巨大(大約增加8秒鐘)
     for row in WebSearchDF.itertuples():
         #pass
         #print(getattr(row, 'Platform'), getattr(row, 'Title'), getattr(row, 'Tag'), getattr(row, 'URL')) # 输出每一行
@@ -37,7 +46,10 @@ def searchDB(text):
         #cursor.execute(sql)
         #print(result_args)
     #args=(keyword)
-    '''
+    ct = datetime.datetime.now()
+    print("檢查和新增資料到DB結束")
+    print("current time:-", ct)
+    print("...")
     ResultPD=pd.DataFrame()
     ResultPD_Sorted=pd.DataFrame()
     try:
@@ -48,7 +60,7 @@ def searchDB(text):
         for result in cursor.fetchall():
             #print(result[1]+"_"+result[3]+"_"+result[4])
             platform=result[3]
-            print(platform)
+            #print(platform)
             platform=platform.replace("anime_gamer", "巴哈姆特動畫瘋")
             platform=platform.replace("nfx","Netflix")
             platform=platform.replace("gimytv","Gimy 劇迷")
@@ -64,7 +76,7 @@ def searchDB(text):
             platform=platform.replace("AniOneYT","羚邦YouTube官方頻道")
             platform=platform.replace("mbi","MUBI")
             platform=platform.replace("cla","Classix")
-            print(platform)
+            #print(platform)
             ResultPD=ResultPD.append({"Platform":platform,"Title":cc.convert(result[1]),"URL":result[4]}, ignore_index=True)
         ResultPD_Sorted=ResultPD.sort_values(by='Platform')
     except:                   # 如果 try 的內容發生錯誤，就執行 except 裡的內容
@@ -72,4 +84,7 @@ def searchDB(text):
     db.close()
     
     print(ResultPD_Sorted)
+    ct = datetime.datetime.now()
+    print("資料整理完成")
+    print("current time:-", ct)
     return(ResultPD_Sorted.to_json(orient="table"));
