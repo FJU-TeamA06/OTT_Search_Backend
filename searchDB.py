@@ -18,6 +18,10 @@ def searchDB(text):
     db = pymysql.connect(host='localhost', port=3306, user='root', passwd='Andy_Ching-0826', db='test_db', charset='utf8', autocommit=True)
     cursor = db.cursor()
     keyword=text
+
+
+    #底下被註解是用來做爬蟲和動態新增的程式碼，對效能影響巨大(大約增加9秒鐘)
+    '''
     WebSearchDF=search.searchOTT(keyword);
     for row in WebSearchDF.itertuples():
         #pass
@@ -33,9 +37,11 @@ def searchDB(text):
         #cursor.execute(sql)
         #print(result_args)
     #args=(keyword)
+    '''
     ResultPD=pd.DataFrame()
     ResultPD_Sorted=pd.DataFrame()
     try:
+        #參數化查詢，防止SQL注入
         sql="CALL SearchTag(%s);"
         cursor.execute(sql,(keyword,))
         
