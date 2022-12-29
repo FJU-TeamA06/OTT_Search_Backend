@@ -16,5 +16,5 @@ def read_root():
 
 
 @app.get("/getkeyword", response_class=HTMLResponse) # 指定 api 路徑 (get方法)
-def read_keyword(keyword: Optional[str] = None):
-    return searchDB.searchDB(keyword)
+def read_keyword(keyword: Optional[str] = None,scrape: Optional[int] = None):
+    return searchDB.searchDB(keyword,scrape)

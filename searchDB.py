@@ -15,39 +15,56 @@ warnings.filterwarnings("ignore")
 
 #建立操作游標
 
-def searchDB(text):
+def searchDB(text,scrape):
     db = pymysql.connect(host='localhost', port=3306, user='root', passwd='Andy_Ching-0826', db='test_db', charset='utf8', autocommit=True)
     cursor = db.cursor()
     keyword=text
 
 
-    #底下被爬蟲，約1秒鐘
+    
+    
+    #動態新增資料的程式碼，對效能影響巨大(大約增加8秒-60秒鐘不等)
+    if scrape == 1:
+        print("抓取選項為啟用")
+        #底下被爬蟲，約1秒鐘
+        ct = datetime.datetime.now()
+        print("爬蟲開始")
+        print("current time:-", ct)
+        WebSearchDF=search.searchOTT(keyword);
+        ct = datetime.datetime.now()
+        print("爬蟲結束")
+        print("current time:-", ct)
+        print("----------")
+        print(WebSearchDF.to_json(orient="table"))
+        print("檢查和新增資料到DB開始")
+        i=1
+        for row in WebSearchDF.itertuples():
+            print("第"+str(i)+"項，共"+str(len(WebSearchDF.index))+"項")
+            #pass
+            #print(getattr(row, 'Platform'), getattr(row, 'Title'), getattr(row, 'Tag'), getattr(row, 'URL')) # 输出每一行
+            #print("------")
+            Platform=getattr(row, 'Platform')
+            Title=getattr(row, 'Title')
+            Tag=getattr(row, 'Tag')
+            URL=getattr(row, 'URL')
+            
+            args=(Title,Tag,Platform,URL)
+            #result_args = cursor.callproc('Check_and_Add_Data',(args))
+            sql="CALL Check_and_Add_Data(%s,%s,%s,%s);"
+            cursor.execute(sql,(Title,Tag,Platform,URL))
+            i=i+1
+            #cursor.execute(sql)
+            #print(result_args)
+        #args=(keyword)
+        time.sleep(0.1)
+        print("檢查和新增資料到DB結束")
+    else:
+        print("抓取選項為禁用")
+
+
+
     ct = datetime.datetime.now()
-    print("爬蟲開始")
-    print("current time:-", ct)
-    WebSearchDF=search.searchOTT(keyword);
-    ct = datetime.datetime.now()
-    print("爬蟲結束")
-    print("current time:-", ct)
-    print("----------")
-    print("檢查和新增資料到DB開始")
-    #動態新增資料的程式碼，對效能影響巨大(大約增加8秒鐘)
-    for row in WebSearchDF.itertuples():
-        #pass
-        #print(getattr(row, 'Platform'), getattr(row, 'Title'), getattr(row, 'Tag'), getattr(row, 'URL')) # 输出每一行
-        #print("------")
-        Platform=getattr(row, 'Platform')
-        Title=getattr(row, 'Title')
-        Tag=getattr(row, 'Tag')
-        URL=getattr(row, 'URL')
-        
-        args=(Title,Tag,Platform,URL)
-        result_args = cursor.callproc('Check_and_Add_Data',(args))
-        #cursor.execute(sql)
-        #print(result_args)
-    #args=(keyword)
-    ct = datetime.datetime.now()
-    print("檢查和新增資料到DB結束")
+    
     print("current time:-", ct)
     print("...")
     ResultPD=pd.DataFrame()
@@ -56,7 +73,7 @@ def searchDB(text):
         #參數化查詢，防止SQL注入
         sql="CALL SearchTag(%s);"
         cursor.execute(sql,(keyword,))
-        
+        print("抓到資料了")
         for result in cursor.fetchall():
             #print(result[1]+"_"+result[3]+"_"+result[4])
             platform=result[3]

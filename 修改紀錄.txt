@@ -1,0 +1,31 @@
+-- 檢查Tag是否存在(存在回傳搜尋值，不存在回0)----(1)
+CALL `test_db_beta`.`SearchTag`("給不");
+
+
+
+-- 檢查URL是否存在----(2)
+
+call Check_URL("Google.com");
+
+
+-- 新增標題----(3)
+
+CALL `test_db_beta`.`Add_Title`(<{Title text}>, <{Keyword text}>, <{Platform text}>, <{URL text}>);
+
+--檢查URL是否重複來決定是否新增全部、只新增Tag或不新增----(4)
+CALL `test_db_beta`.`Check_and_Add_Data`(<{Title text}>, <{Keyword text}>, <{Platform text}>, <{URL text}>);
+
+順序：
+(4)
+(1)
+Python處理
+先用搜尋爬蟲取得抓到的結果👌
+再用迴圈跑(4)來一個一個新增👌（2022/12/08追記：用這個新增方式會導致相當久的讀寫時間）
+最後用(1)來顯示更新過的搜尋結果👌
+
+－－－－－－－－－
+新順序
+先用搜尋爬蟲取得抓到的結果👌
+再把這些結果重新製作成一個格式簡單的JSON👌
+一次送交給SQL那邊做處理
+最後用(1)來顯示👌
