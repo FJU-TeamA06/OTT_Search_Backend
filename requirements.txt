@@ -1,5 +1,5 @@
 bilibili_api_python==13.1.2
 httpx==0.23.0
 pandas==1.5.1
-yt_dlp==2024.4.9
+yt_dlp==2024.7.1
 JustWatch==0.5.1
